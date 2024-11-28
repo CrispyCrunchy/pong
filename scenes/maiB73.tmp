@@ -1,0 +1,99 @@
+[gd_scene load_steps=11 format=3 uid="uid://bcplp4um6tq17"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_gqldl"]
+[ext_resource type="Texture2D" uid="uid://ci6mrn7qpodg0" path="res://assets/images/Background Empty.png" id="2_cedmi"]
+[ext_resource type="PackedScene" uid="uid://dtftq3x33a2hc" path="res://scenes/player_1.tscn" id="3_ssb2j"]
+[ext_resource type="PackedScene" uid="uid://csdw6dwf5xrrg" path="res://scenes/player_2.tscn" id="4_xm68x"]
+[ext_resource type="PackedScene" uid="uid://y5juct7g0g6x" path="res://scenes/ball.tscn" id="5_w6m0p"]
+[ext_resource type="FontFile" uid="uid://r8t3sq5fraws" path="res://assets/fonts/Retro Gaming.ttf" id="6_ajt06"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rke2h"]
+size = Vector2(1424, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_agd6u"]
+size = Vector2(1424, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f2nas"]
+size = Vector2(104, 608)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bln4g"]
+size = Vector2(104, 608)
+
+[node name="Main" type="Node2D"]
+position = Vector2(712, 400)
+script = ExtResource("1_gqldl")
+
+[node name="Background" type="Sprite2D" parent="."]
+scale = Vector2(1.1125, 1.11111)
+texture = ExtResource("2_cedmi")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.9, 0.9)
+
+[node name="Borders" type="StaticBody2D" parent="."]
+collision_layer = 2
+
+[node name="Top" type="CollisionShape2D" parent="Borders"]
+position = Vector2(0, -352)
+shape = SubResource("RectangleShape2D_rke2h")
+
+[node name="Bottom" type="CollisionShape2D" parent="Borders"]
+position = Vector2(0, 352)
+shape = SubResource("RectangleShape2D_agd6u")
+
+[node name="Score Left" type="Area2D" parent="."]
+position = Vector2(-656, 0)
+
+[node name="Left" type="CollisionShape2D" parent="Score Left"]
+position = Vector2(-4, 0)
+shape = SubResource("RectangleShape2D_f2nas")
+
+[node name="Score Right" type="Area2D" parent="."]
+position = Vector2(656, 0)
+
+[node name="Right" type="CollisionShape2D" parent="Score Right"]
+position = Vector2(4, 0)
+shape = SubResource("RectangleShape2D_bln4g")
+
+[node name="Player_1" parent="." instance=ExtResource("3_ssb2j")]
+position = Vector2(-584, 0)
+collision_mask = 3
+
+[node name="Player 2" parent="." instance=ExtResource("4_xm68x")]
+position = Vector2(584, 0)
+collision_mask = 3
+
+[node name="Ball" parent="." instance=ExtResource("5_w6m0p")]
+collision_mask = 3
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="PlayerScore" type="Label" parent="HUD"]
+texture_filter = 1
+offset_left = 554.0
+offset_top = 15.0
+offset_right = 596.0
+offset_bottom = 71.0
+theme_override_fonts/font = ExtResource("6_ajt06")
+theme_override_font_sizes/font_size = 44
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CPUScore" type="Label" parent="HUD"]
+texture_filter = 1
+offset_left = 680.0
+offset_top = 15.0
+offset_right = 722.0
+offset_bottom = 71.0
+theme_override_fonts/font = ExtResource("6_ajt06")
+theme_override_font_sizes/font_size = 44
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BallTimer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="BallTimer" to="." method="_on_ball_timer_timeout"]

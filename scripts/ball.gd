@@ -25,7 +25,7 @@ func _physics_process(delta: float) -> void:
 	if collision:
 		collider = collision.get_collider()
 		# If ball hits paddle
-		if collider == $"../Player" or collider == $"../CPU":
+		if collider == $"../Player" or collider == $"../Player2" or collider == $"../CPU":
 			speed += ACCELERATION
 			direction = new_direction(collider)
 		# If ball hits wall
